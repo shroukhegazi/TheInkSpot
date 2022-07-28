@@ -4,13 +4,8 @@ from taggit.models import TaggedItemBase
 
 
 class TaggedPost(TaggedItemBase):
-    content_object = models.ForeignKey('Post', on_delete=models.CASCADE)
+    content_object = models.ForeignKey("Post", on_delete=models.CASCADE)
 
 
 class Post(models.Model):
     tags = TaggableManager()
-
-
-
-
-
