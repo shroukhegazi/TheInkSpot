@@ -4,7 +4,6 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.db import models
-from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
@@ -60,13 +59,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["name", "email"]
 
     objects = UserManager()
-
-    def get_absolute_url(self):
-        """Get url for user's detail view.
-        Returns:
-            str: URL for user detail.
-        """
-        return reverse("users:detail", kwargs={"username": self.username})
 
     def __str__(self):
         return self.username

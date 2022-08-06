@@ -7,9 +7,6 @@ pytestmark = pytest.mark.django_db
 
 @pytest.mark.django_db
 class TestUserModel:
-    def test_user_get_absolute_url(self, user):
-        assert user.get_absolute_url() == f"/users/{user.username}/"
-
     def test_update_user(self, user):
         user.name = "mahmoud saeed ali hussain"
         user.save()
