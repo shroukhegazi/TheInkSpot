@@ -17,6 +17,7 @@ urlpatterns = [
     # User management
     path("api/users/", include("theinkspot.users.api.urls", namespace="drf-users")),
     path("accounts/", include("allauth.urls")),
+    path("profiles/", include("theinkspot.profiles.urls")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
