@@ -1,6 +1,7 @@
 import pytest
+from django.db import IntegrityError
 
-from theinkspot.users.models import User
+from theinkspot.users.models import User, UserCategoryFollow
 
 pytestmark = pytest.mark.django_db
 
@@ -71,3 +72,37 @@ class TestUserModel:
     def test_create_super_user(self, superuser):
         is_user_a_superuser = superuser.is_superuser
         assert is_user_a_superuser is True
+
+
+@pytest.mark.django_db
+class TestUserCategoryFollow:
+    def test_user_follow_category(self, user, category):
+        follow = UserCategoryFollow.objects.create(user=user, category=category)
+        assert user.followers.count() == 1
+        assert category.followed_categories.count() == 1
+        assert follow.get_email is False
+
+    def test_user_unfollow_category(self, user, category):
+        UserCategoryFollow.objects.create(user=user, category=category)
+        user.followers.first().delete()
+        assert user.followers.count() == 0
+        assert category.followed_categories.count() == 0
+
+    def test_user_follow_already_followed_category(self, user, category):
+        UserCategoryFollow.objects.create(user=user, category=category)
+
+        with pytest.raises(IntegrityError):
+            UserCategoryFollow.objects.create(user=user, category=category)
+
+    def test_user_unfollow_already_unfollowed_category(self, user, category):
+        UserCategoryFollow.objects.create(user=user, category=category)
+        user.followers.first().delete()
+
+        with pytest.raises(AttributeError):
+            user.followers.first().delete()
+
+    def test_custom_model_manager_returns_queryset(self, user, category):
+        UserCategoryFollow.objects.create(user=user, category=category)
+        object = UserCategoryFollow.objects.first()
+        assert object.user == user
+        assert object.category == category
