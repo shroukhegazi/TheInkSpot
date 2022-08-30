@@ -1,10 +1,13 @@
 from urllib import request
 
+import pytest
 from django.core.files import File
 from django.test import TestCase
 
 from theinkspot.profiles.models import Profile
 from theinkspot.users.models import User
+
+pytestmark = pytest.mark.django_db
 
 
 class ProfileModelTestcase(TestCase):
