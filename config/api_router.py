@@ -8,6 +8,7 @@ from theinkspot.users.api.views import (
     RegisterUsers,
     UserViewSet,
     VerifyEmail,
+    UserCheckViewset
 )
 
 if settings.DEBUG:
@@ -16,6 +17,7 @@ else:
     router = SimpleRouter()
 
 router.register("users", UserViewSet, "user")
+router.register("test", UserCheckViewset, "test-users")
 router.register("users/category", CategoryFollow, basename="categryFollow")
 
 

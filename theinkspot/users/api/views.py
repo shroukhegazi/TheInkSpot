@@ -28,13 +28,23 @@ from rest_framework.throttling import AnonRateThrottle
 from rest_framework.viewsets import GenericViewSet, ViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from rest_framework.mixins import ListModelMixin, CreateModelMixin
+from rest_framework.viewsets import GenericViewSet
 from theinkspot.category.models import Category
-from theinkspot.users.api.serializers import UserSerializer
+from theinkspot.users.api.serializers import UserSerializer, TestUserSerialzier
 from theinkspot.users.models import UserCategoryFollow
 
 User = get_user_model()
 
+
+class UserCheckViewset(
+    CreateModelMixin,
+    ListModelMixin,
+    GenericViewSet
+):
+    serializer_class = TestUserSerialzier
+    queryset = User.objects.all()
+    lookup_field = 'pk'
 
 class RegisterUsers(generics.GenericAPIView):
 
