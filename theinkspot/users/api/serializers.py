@@ -7,20 +7,12 @@ User = get_user_model()
 
 class TestUserSerialzier(serializers.ModelSerializer):
     password = serializers.CharField(max_length=128, min_length=15, write_only=True)
-    password_confirmation = serializers.CharField(
-        max_length=128, min_length=15, write_only=True
-    )
     class Meta:
         model = User
-        fields = fields = ["name", "username", "email", "password", "password_confirmation"]
+        fields = fields = ["name", "username", "email", "password"]
 
-    def create(self, validation_data):
-        return User.objects.create_user(
-            name=validation_data["name"],
-            username=validation_data["username"],
-            email=validation_data["email"],
-            password=validation_data["password"],
-        )
+    def create(self, validated_data):
+        return super().create(validated_data)
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=128, min_length=15, write_only=True)
